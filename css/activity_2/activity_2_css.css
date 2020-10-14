@@ -1,0 +1,22 @@
+div {
+	border: 12px solid;
+	border-radius: 10px;
+	padding: 2px 2em 2px 2em;
+	background-color: white;
+	opacity: 0.75;
+	border-color: #4d4d4d;
+	width: 400px;
+    height: 250px;
+    margin-top: 5%;
+    margin-left: 15%;
+    font-size: 16px;
+    align-content: center;
+}
+
+body {
+	background-image: url("cristina-gottardi-I1Lv2yX67GI-unsplash.jpg");
+	background-color: cyan;
+	background-repeat: no-repeat;
+	background-size: 90% 1500px;
+	background-position: center;
+}
