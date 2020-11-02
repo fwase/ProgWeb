@@ -104,7 +104,7 @@ class IntegerSet {
         return this.getMaxValue
     }
 
-    getAvailableValue () {
+    getAvailableValues () {
         return this.availableValue
     }
 }
