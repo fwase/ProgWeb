@@ -34,6 +34,7 @@ while(true){
     number_player = parseInt(prompt())
     
     if(number_played[number_player] === undefined){
+        plays_won--;
         console.log("A sua pontuação foi de " + plays_won)
         break
     }
@@ -53,6 +54,9 @@ while(true){
     }
     else{
         console.log("Você perdeu!")
+        plays_won--;
+        console.log("A sua pontuação foi de " + plays_won)
+        break
     }
 
     plays_won += play_result
