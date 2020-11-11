@@ -2,7 +2,7 @@
   background-image: url('assets/reserva.png');
   position: absolute;
   left: 0;
-  top: 0;
+  top: 1;
   z-index: 1;
 }
 
@@ -10,4 +10,18 @@
   background-image: url('assets/foco.gif');
   position: absolute;
   z-index: 2;
+}
+
+.caveira-fogo {
+  background-image: url('assets/caveira.gif');
+  position: absolute;
+  z-index: 3;
+}
+
+.vida {
+  background-image: url('assets/arvore.png');
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
 }
