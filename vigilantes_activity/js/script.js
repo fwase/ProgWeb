@@ -11,13 +11,21 @@
   let gameLoop;
   let isPaused = false;
   let score = 0;
-  let lifes = 5;
+  let vidas = [];
+  let qtd_lifes;
+
+  function init_lifes () {
+    qtd_lifes = 5
+    for (let i = 0 ; i < qtd_lifes ; i++){
+      let vida = new Vida(i);
+      vidas.push(vida);
+    }
+  }
 
   function init() {
     drawScore();
     reserva = new Reserva();
-    lifes = new Vida();
-    console.log(lifes)
+    init_lifes();
     gameLoop = setInterval(run, 1000/FPS);
   }
 
@@ -36,9 +44,11 @@
       //console.log(focos)
       // REMOVE INCENDIO FROM MAP
       //event.target.remove()
-      console.log(focos.indexOf(event.target))
       score += 10;
       drawScore();
+      let vidas = document.getElementsByClassName("vida");
+      console.log(vidas);
+      document.getElementsByClassName("vida")[vidas.length - 1].remove();
       return
     }
     else{
@@ -84,13 +94,15 @@
   }
 
   class Vida {
-    constructor () {
+    constructor (index) {
       //scoreElement = document.getElementById("score");
-      this.element = document.createElement("life");
+      this.element = document.createElement("div");
       this.element.className = "vida";
-      this.element.style.backgroundRepeat = "no-repeat";
-      this.element.style.width = `100px`;
-      this.element.style.height = `100px`;
+      this.element.style.width = "100px";
+      this.element.style.height = "54px";
+      this.element.style.left = `${(index*54)+(index*25)}px`
+      this.element.style.display = "inline-block";
+      this.element.style.position = "absolute";
       document.body.appendChild(this.element);
     }
   }
