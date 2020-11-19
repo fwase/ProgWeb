@@ -7,34 +7,63 @@
   let probCaveira = 5;
   let reserva;
   let focos = [];
-  let caveiras = []
+  let caveiras = [];
   let gameLoop;
   let isPaused = false;
   let score = 0;
   let vidas = [];
   let qtd_lifes;
 
-  function init_lifes () {
-    qtd_lifes = 5
+  function initLifes () {
+    qtd_lifes = 5;
     for (let i = 0 ; i < qtd_lifes ; i++){
       let vida = new Vida(i);
       vidas.push(vida);
     }
   }
 
-  function init() {
-    drawScore();
-    reserva = new Reserva();
-    init_lifes();
+  function loserLife () {
+    if (qtd_lifes === 0) {
+      console.log('Perdeu tudo!');
+      clearInterval(gameLoop);
+    }
+    
+    let vidasClass = document.getElementsByClassName("vida");
+    document.getElementsByClassName("vida")[vidasClass.length - 1].remove();
+    qtd_lifes--;
+  }
+
+  function restartGame () {
+    focos = [];
+    caveiras = [];
+    isPaused = false;
+    score = 0;
+    vidas = [];
+
+    init();
     gameLoop = setInterval(run, 1000/FPS);
   }
 
+  function init() {
+    drawScore();
+    reserva = new Reserva();
+    initLifes();
+  }
+
   window.addEventListener("keydown", function (e) {
+    if (e.key === 's') {
+      if (qtd_lifes === 0) {
+        restartGame();
+        return
+      }
+
+      gameLoop = setInterval(run, 1000/FPS);
+    }
     if (e.key === 'o') {
       clearInterval(gameLoop);
     }
     if (e.key === 'p') {
-
+      isPaused = !isPaused;
     }
   })
 
@@ -43,18 +72,12 @@
       //console.log(reserva.element)
       //console.log(focos)
       // REMOVE INCENDIO FROM MAP
-      //event.target.remove()
+      event.target.remove();
       score += 10;
       drawScore();
-      let vidas = document.getElementsByClassName("vida");
-      console.log(vidas);
-      document.getElementsByClassName("vida")[vidas.length - 1].remove();
+      loserLife();
       return
     }
-    else{
-      console.log('Não clicou no incendio')
-    }
-    console.log(reserva.element)
   })
 
   class Reserva {
@@ -63,6 +86,9 @@
       this.element.className = "reserva";
       this.element.style.width = `${gameDimensions[0]}px`;
       this.element.style.height = `${gameDimensions[1]}px`;
+      this.element.click(function(){
+
+      })
       document.body.appendChild(this.element);
     }
   }
@@ -77,6 +103,10 @@
       this.element.style.top = `${Math.floor((Math.random() * (gameDimensions[1]-focoDimensions[1])))}px`;
       //console.log(this.element.style.width , this.element.style.height)
       //console.log(this.element.style.left , this.element.style.top)
+      setTimeout(function() {
+        //this.element.remove();
+        loserLife();
+      },2000);
       reserva.element.appendChild(this.element);
     }
   }
@@ -113,23 +143,29 @@
     // clear draw
     scoreElement.getContext("2d").clearRect(0, 0, scoreElement.width, scoreElement.height)
     
-    context.font = "25px Arial";
+    context.font = "45px Arial";
     context.fillStyle = "#FFFFF";
-    context.fillText("Score: " + score, 1000, 20);
+    let score_string = score.toString();
+
+    for (let i = score_string.length ; i < 5 ; i++){
+      score_string = ['0'] + score_string
+    }
+
+    context.fillText(score_string, 1000, 35);
   }
 
   function run () {
-    if (Math.random() * 100 < probFoco) {
-      let foco = new FocoIncendio();
-      focos.push(foco);
-      //console.log(focos);
-    }
-    if (Math.random() * 100 < probCaveira) {
-      let caveira = new CaveiraFogo();
-      caveiras.push(caveira);
-      console.log(caveira)
-    }
-    
+    if (!isPaused) {
+      if (Math.random() * 100 < probFoco) {
+        let foco = new FocoIncendio();
+        focos.push(foco);
+      }
+      if (Math.random() * 100 < probCaveira) {
+        let caveira = new CaveiraFogo();
+        caveiras.push(caveira);
+        console.log(caveira)
+      }
+    } 
   }
 
   init();
