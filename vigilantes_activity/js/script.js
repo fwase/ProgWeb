@@ -4,7 +4,7 @@
   let gameDimensions = [1243, 960];
   let focoDimensions = [100, 130];
   let probFoco = 25;
-  let probCaveira = 5;
+  let probCaveira = 2.25;
   let reserva;
   let focos = [];
   let caveiras = [];
@@ -13,12 +13,34 @@
   let score = 0;
   let vidas = [];
   let qtd_lifes;
+  let messageToDisplay;
 
   function initLifes () {
     qtd_lifes = 5;
     for (let i = 0 ; i < qtd_lifes ; i++){
       let vida = new Vida(i);
       vidas.push(vida);
+    }
+  }
+  
+  function verifyLoserLife() {
+    let millisecondsDestroy = 2000;
+
+    let focosIncendio = document.getElementsByClassName('foco-incendio');
+    for (let i = 0 ; i < focosIncendio.length ; i++) {
+      if (Date.now() - focosIncendio[i].createAt >= millisecondsDestroy) {
+        reserva.element.removeChild(focosIncendio[i]);
+        loserLife();
+      }
+    }
+
+    let caveiraIncendio = document.getElementsByClassName('caveira-fogo');
+    for (let i = 0 ; i < caveiraIncendio.length ; i++) {
+      if (Date.now() - caveiraIncendio[i].createAt >= millisecondsDestroy) {
+        reserva.element.removeChild(caveiraIncendio[i]);
+        loserLife();
+        loserLife();
+      }
     }
   }
 
@@ -47,6 +69,7 @@
   function init() {
     drawScore();
     reserva = new Reserva();
+
     initLifes();
   }
 
@@ -59,23 +82,20 @@
 
       gameLoop = setInterval(run, 1000/FPS);
     }
-    if (e.key === 'o') {
+    else if (e.key === 'o') {
       clearInterval(gameLoop);
     }
-    if (e.key === 'p') {
+    else if (e.key === 'p') {
       isPaused = !isPaused;
     }
   })
 
   window.addEventListener("mousedown", function(event) {
-    if(event.target.className === 'foco-incendio'){
-      //console.log(reserva.element)
-      //console.log(focos)
-      // REMOVE INCENDIO FROM MAP
+    if(event.target.className === 'foco-incendio' ||
+    event.target.className === 'caveira-fogo'){
       event.target.remove();
       score += 10;
       drawScore();
-      loserLife();
       return
     }
   })
@@ -86,9 +106,6 @@
       this.element.className = "reserva";
       this.element.style.width = `${gameDimensions[0]}px`;
       this.element.style.height = `${gameDimensions[1]}px`;
-      this.element.click(function(){
-
-      })
       document.body.appendChild(this.element);
     }
   }
@@ -101,12 +118,7 @@
       this.element.style.height = `${focoDimensions[1]}px`;
       this.element.style.left = `${Math.floor((Math.random() * (gameDimensions[0]-focoDimensions[0])))}px`;
       this.element.style.top = `${Math.floor((Math.random() * (gameDimensions[1]-focoDimensions[1])))}px`;
-      //console.log(this.element.style.width , this.element.style.height)
-      //console.log(this.element.style.left , this.element.style.top)
-      setTimeout(function() {
-        //this.element.remove();
-        loserLife();
-      },2000);
+      this.element.createAt = Date.now();
       reserva.element.appendChild(this.element);
     }
   }
@@ -119,13 +131,13 @@
       this.element.style.height = `${focoDimensions[1]}px`;
       this.element.style.left = `${Math.floor((Math.random() * (gameDimensions[0]-focoDimensions[0])))}px`;
       this.element.style.top = `${Math.floor((Math.random() * (gameDimensions[1]-focoDimensions[1])))}px`;
+      this.element.createAt = Date.now();
       reserva.element.appendChild(this.element);
     }
   }
 
   class Vida {
     constructor (index) {
-      //scoreElement = document.getElementById("score");
       this.element = document.createElement("div");
       this.element.className = "vida";
       this.element.style.width = "100px";
@@ -163,8 +175,8 @@
       if (Math.random() * 100 < probCaveira) {
         let caveira = new CaveiraFogo();
         caveiras.push(caveira);
-        console.log(caveira)
       }
+      verifyLoserLife();
     } 
   }
 
