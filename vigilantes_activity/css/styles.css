@@ -15,7 +15,14 @@
 .caveira-fogo {
   background-image: url('assets/caveira.gif');
   position: absolute;
-  z-index: 3;
+  z-index: 2;
+}
+
+.devastacao {
+  background-image: url('assets/devastacao.png');
+  position: absolute;
+  z-index: 2;
+  
 }
 
 .vida {
@@ -23,11 +30,4 @@
   left: 0;
   top: 0;
   z-index: 2;
-}
-
-p {
-  color: black;
-  background: grey;
-  border: 5px solid black;
-  z-index: 4;
 }
