@@ -12,12 +12,14 @@
   let isPaused = false;
   let score = 0;
   let vidas = [];
-  let qtd_lifes;
-  let messageToDisplay;
+  let qtdLifes;
+  let devastacoes = [];
+  let velocidade = 1000;
+  let initGame = Date.now();
 
   function initLifes () {
-    qtd_lifes = 5;
-    for (let i = 0 ; i < qtd_lifes ; i++){
+    qtdLifes = 5;
+    for (let i = 0 ; i < qtdLifes ; i++){
       let vida = new Vida(i);
       vidas.push(vida);
     }
@@ -29,7 +31,14 @@
     let focosIncendio = document.getElementsByClassName('foco-incendio');
     for (let i = 0 ; i < focosIncendio.length ; i++) {
       if (Date.now() - focosIncendio[i].createAt >= millisecondsDestroy) {
+        let width = focosIncendio[i].style.width;
+        let height = focosIncendio[i].style.height;
+        let left = focosIncendio[i].style.left;
+        let top = focosIncendio[i].style.top;
+
         reserva.element.removeChild(focosIncendio[i]);
+        let devastacao = new Devastacao(width, height, left, top);
+        devastacoes.push(devastacao);
         loserLife();
       }
     }
@@ -37,22 +46,27 @@
     let caveiraIncendio = document.getElementsByClassName('caveira-fogo');
     for (let i = 0 ; i < caveiraIncendio.length ; i++) {
       if (Date.now() - caveiraIncendio[i].createAt >= millisecondsDestroy) {
+        let left = caveiraIncendio[i].style.left;
+        let top = caveiraIncendio[i].style.top;
+
         reserva.element.removeChild(caveiraIncendio[i]);
+        let devastacao = new Devastacao("250px", "250px", left, top);
+        devastacoes.push(devastacao);
         loserLife();
         loserLife();
       }
     }
   }
 
-  function loserLife () {
-    if (qtd_lifes === 0) {
-      console.log('Perdeu tudo!');
-      clearInterval(gameLoop);
-    }
-    
+  function loserLife () {    
     let vidasClass = document.getElementsByClassName("vida");
     document.getElementsByClassName("vida")[vidasClass.length - 1].remove();
-    qtd_lifes--;
+    qtdLifes--;
+
+    if (qtdLifes === 0) {
+      clearInterval(gameLoop);
+      alert(`GAME OVER!\n\nScore: ${score}\n\Digite s para recomeçar`);
+    }
   }
 
   function restartGame () {
@@ -61,9 +75,21 @@
     isPaused = false;
     score = 0;
     vidas = [];
+    devastacoes = [];
+    velocidade = 1000;
+
+    let restartFocos = document.getElementsByClassName("foco-incendio");
+    while(restartFocos.length > 0) {
+      reserva.element.removeChild(restartFocos[0]);
+    }
+
+    let restartDestruicoes = document.getElementsByClassName("caveira-fogo");
+    while(restartDestruicoes.length > 0) {
+      reserva.element.removeChild(restartDestruicoes[0]);
+    }
 
     init();
-    gameLoop = setInterval(run, 1000/FPS);
+    gameLoop = setInterval(run, velocidade/FPS);
   }
 
   function init() {
@@ -75,12 +101,12 @@
 
   window.addEventListener("keydown", function (e) {
     if (e.key === 's') {
-      if (qtd_lifes === 0) {
+      if (qtdLifes === 0) {
         restartGame();
         return
       }
 
-      gameLoop = setInterval(run, 1000/FPS);
+      gameLoop = setInterval(run, velocidade/FPS);
     }
     else if (e.key === 'o') {
       clearInterval(gameLoop);
@@ -142,12 +168,27 @@
       this.element.className = "vida";
       this.element.style.width = "100px";
       this.element.style.height = "54px";
-      this.element.style.left = `${(index*54)+(index*25)}px`
+      this.element.style.left = `${(index*54)+(index*25)}px`;
       this.element.style.display = "inline-block";
       this.element.style.position = "absolute";
       document.body.appendChild(this.element);
     }
   }
+
+  class Devastacao {
+    constructor (width, height, left, top) {
+      this.element = document.createElement("div");
+      this.element.className = "devastacao";
+      this.element.style.width = width;
+      this.element.style.height = height;
+      this.element.style.left = left;
+      this.element.style.top = top;
+      this.element.style.backgroundPosition = "center";
+      this.element.style.backgroundRepeat = "no-repeat";
+      reserva.element.appendChild(this.element);
+    }
+  }
+
 
   function drawScore () {
     let scoreElement = document.getElementById("score");
@@ -162,7 +203,7 @@
     for (let i = score_string.length ; i < 5 ; i++){
       score_string = ['0'] + score_string
     }
-
+    
     context.fillText(score_string, 1000, 35);
   }
 
@@ -177,6 +218,11 @@
         caveiras.push(caveira);
       }
       verifyLoserLife();
+      
+      if (Date.now() - initGame >= 60000) {
+        initGame = Date.now();
+        velocidade -= 100;
+      }
     } 
   }
 
