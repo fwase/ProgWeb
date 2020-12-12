@@ -4,12 +4,10 @@ const logger = require("morgan");
 
 router.use(logger("short"));
 
-router.get("/", function (req, res) {
-    res.end("Página principal do site")
-})
-
 router.get("/sobre", function (req, res) {
-    res.end("Página sobre")
+    res.render("index", {
+        layout: false
+    })
 })
 
 router.use(function(req, res) {
