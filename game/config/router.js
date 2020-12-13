@@ -7,11 +7,10 @@ router.get("/sobre",    mainController.sobre)
 router.get("/jogo",     mainController.jogo)
 router.get("/interface",mainController.interface)
 router.get("/cursos",   mainController.cursos)
-/*
+
 router.use(function(req, res) {
     res.statusCode = 404;
-    res.end("404!");
+    res.end("Rota não feita. 404!!!");
 });
-*/
 
 module.exports = router;

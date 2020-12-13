@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
+    "username": "myapp",
+    "password": "Senha_prod_123",
+    "database": "myapp",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
