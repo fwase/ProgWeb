@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const mainController = require("../app/controllers/main")
+const MainController = require("../app/controllers/main")
+const AreaController = require("../app/controllers/area")
 
-router.get("/index",         mainController.index)
-router.get("/sobre",    mainController.sobre)
-router.get("/jogo",     mainController.jogo)
-router.get("/interface",mainController.interface)
-router.get("/cursos",   mainController.cursos)
+// MainController
+router.get("/index",    MainController.index)
+router.get("/sobre",    MainController.sobre)
+router.get("/jogo",     MainController.jogo)
+router.get("/interface",MainController.interface)
+router.get("/cursos",   MainController.cursos)
+//router.get("/area",     MainController.area)
 
-router.use(function(req, res) {
-    res.statusCode = 404;
-    res.end("Rota não feita. 404!!!");
-});
+// AreaController
+router.get('/area' ,    AreaController.index);
 
 module.exports = router;

@@ -18,5 +18,9 @@ const cursos = (req, res) => {
     res.render("main/cursos")
 }
 
+const area = (req, res) => {
+    res.render("area/index")
+}
 
-module.exports = { index, sobre, jogo, interface, cursos }
+
+module.exports = { index, sobre, jogo, interface, cursos, area }
