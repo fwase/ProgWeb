@@ -6,7 +6,11 @@ const sass = require("node-sass-middleware");
 
 const app = express();
 
-app.engine("handlebars", handlebars());
+app.engine("handlebars", handlebars({
+	layoutsDir:  __dirname + '/app/views/layouts',
+	defaultLayout: 'main'
+}));
+
 app.set("view engine","handlebars");
 app.set("views", __dirname + "/app/views");
 
@@ -24,7 +28,8 @@ app.use(logger("short"));
 
 app.use(router);
 
-app.use("/css", express.static(__dirname + "/public/css"));
+app.use("/img", express.static(`${__dirname}/public/img`));
+app.use("/css", express.static(`${__dirname}/public/css`));
 
 app.use("/js", [
 	express.static(__dirname + '/node_modules/jquery/dist'),

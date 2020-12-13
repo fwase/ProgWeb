@@ -1,5 +1,5 @@
 .reserva {
-  background-image: url('assets/reserva.png');
+  background-image: url('../img/reserva.png');
   position: absolute;
   left: 0;
   top: 1;
@@ -7,26 +7,27 @@
 }
 
 .foco-incendio {
-  background-image: url('assets/foco.gif');
+  background-image: url('../img/foco.gif');
   position: absolute;
   z-index: 2;
 }
 
 .caveira-fogo {
-  background-image: url('assets/caveira.gif');
+  background-image: url('../img/caveira.gif');
   position: absolute;
   z-index: 2;
 }
 
 .devastacao {
-  background-image: url('assets/devastacao.png');
+  background-image: url('../img/devastacao.png');
   position: absolute;
   z-index: 2;
   
 }
 
 .vida {
-  background-image: url('assets/arvore.png');
+  background-image: url('../img/arvore.png');
+  position: relative;
   left: 0;
   top: 0;
   z-index: 2;
