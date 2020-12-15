@@ -29,6 +29,7 @@ app.use(logger("short"));
 app.use(router);
 
 app.use("/img", express.static(`${__dirname}/public/img`));
+app.use('/webfonts', express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/webfonts`));
 app.use("/css", express.static(`${__dirname}/public/css`));
 
 app.use("/js", [

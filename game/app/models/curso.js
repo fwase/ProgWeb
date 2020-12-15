@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Area)
     }
   };
   Curso.init({
@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len:{
-          args: [1,30],
-          msg: "O nome entre 1 e 30 caracteres"
+          args: [5,40],
+          msg: "O nome precisa ter entre 5 e 40 caracteres"
         }
       }
     },

@@ -15,7 +15,7 @@ const interface = (req, res) => {
 }
 
 const cursos = (req, res) => {
-    res.render("main/cursos")
+    res.render("curso/index")
 }
 
 const area = (req, res) => {
